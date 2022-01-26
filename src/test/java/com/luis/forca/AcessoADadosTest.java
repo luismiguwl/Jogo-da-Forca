@@ -12,7 +12,7 @@ public class AcessoADadosTest {
 	
 	@Test
 	void deveRetornarUmArrayNaoNuloSeDestinoExistir() {
-		acessoADados = new AcessoADados(Destino.get());
+		acessoADados = new AcessoADados(Destino.getDestino(Categoria.FILMES));
 		assertNotNull(acessoADados.obterPalavrasEDicas());
 	}
 	

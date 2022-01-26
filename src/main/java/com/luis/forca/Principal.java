@@ -6,7 +6,7 @@ import static com.luis.forca.Utils.*;
 public class Principal {
 
     public static void main(String[] args) {
-    	AcessoADados acessoADados = new AcessoADados(Destino.get());
+    	AcessoADados acessoADados = new AcessoADados(Destino.getDestino(Categoria.FILMES));
         List<ElementoDaForca> palavrasEDicas = acessoADados.obterPalavrasEDicas();
         
         while (true) {
