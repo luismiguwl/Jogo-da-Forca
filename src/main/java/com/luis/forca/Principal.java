@@ -4,12 +4,15 @@ import java.util.List;
 import static com.luis.forca.Utils.*;
 
 public class Principal {
-
+	
     public static void main(String[] args) {
-    	AcessoADados acessoADados = new AcessoADados(Destino.getDestino(Categoria.FILMES));
-        List<ElementoDaForca> palavrasEDicas = acessoADados.obterPalavrasEDicas();
-        
+    	exibirMenu();
+    	Categoria categoria = Categoria.solicitarCategoria();
+    	
         while (true) {
+        	AcessoADados acessoADados = new AcessoADados(Destino.getDestino(categoria));
+            List<ElementoDaForca> palavrasEDicas = acessoADados.obterPalavrasEDicas();
+            
             System.out.println("===========================================");
             
             ElementoDaForca elemento = obterElementoAleatorio(palavrasEDicas);
@@ -18,12 +21,18 @@ public class Principal {
             
             System.out.println("===========================================");
             
-            boolean querJogarNovamente = perguntarSeDesejaJogarNovamente();
+            boolean querJogarNovamente = obterSimOuNao("Deseja jogar novamente? (S/N) ");
             
             if (!querJogarNovamente) {
-                System.out.println("Obrigado por jogar!");
-                System.exit(0);
+            	encerrarJogoSeUsuarioDesejar();
             }
+            
+            boolean desejaVerMenu = obterSimOuNao("Deseja ver menu? (S/N) ");
+            
+            if (desejaVerMenu) {
+				exibirMenu();
+				categoria = Categoria.solicitarCategoria();
+			}
         }
     }
 
@@ -31,16 +40,21 @@ public class Principal {
         int numeroAleatorio = obterNumeroAleatorio(elementos.size());
         return elementos.get(numeroAleatorio);
     }
-
-    private static boolean perguntarSeDesejaJogarNovamente() {
-    	char letra = solicitarChar("Deseja jogar novamente(S/N)? ");
-    	letra = Character.toLowerCase(letra);
-    	
-    	if (letra == 's' || letra == 'n') {
-			return letra == 's';
-		}
-    	
-        System.out.println("Caracter inválido! Informe S ou N para continuar!");
-        return perguntarSeDesejaJogarNovamente();
+    
+    private static void exibirMenu() {
+    	Menu menu = new Menu();
+    	menu.exibirOpcoes();
+    	menu.solicitarOpcaoAtual();
+    	menu.executarOpcao();
     }
+    
+    private static void encerrarJogoSeUsuarioDesejar() {
+    	boolean desejaEncerrarJogo = obterSimOuNao("Deseja encerrar jogo? (S/N) ");
+    	
+    	if (desejaEncerrarJogo) {
+    		System.out.println("Obrigado por jogar!");
+			encerrarSistema();
+		}
+    }
+    
 }
